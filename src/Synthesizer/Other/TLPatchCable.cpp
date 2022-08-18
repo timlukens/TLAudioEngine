@@ -8,14 +8,12 @@
 #include "TLPatchCable.hpp"
 #include "TLRealTimeAudioObject.hpp"
 
-TLPatchCable::TLPatchCable(int bufferSize, void* input, void* output) {
+TLPatchCable::TLPatchCable(int bufferSize, int elementSize, TLPatchNode* input, TLPatchNode* output) {
     _bufferSize = bufferSize;
-    _input = input;
-    outputObj = output;
+    inputNode = input;
+    outputNode = output;
     
-    TLRealTimeAudioObject* o = (TLRealTimeAudioObject*)output;
-    
-    o->setInputCable(this);
+    signal = malloc(elementSize * bufferSize);
 }
 
 TLPatchCable::~TLPatchCable() {

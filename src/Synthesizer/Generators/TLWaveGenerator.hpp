@@ -24,8 +24,14 @@ public:
     ~TLWaveGenerator();
     
     int tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData);
+    void SetFrequency(double freq);
+    void SetAmplitude(double amp);
+    TLPatchNode* freqModNode;
+    TLPatchNode* ampModNode;
     
 private:
+    double _amplitude;
+    double _frequency;
     int tableSize = 8192;
     double index = 0;
     double stepSize;

@@ -9,18 +9,19 @@
 #define TLPatchCable_hpp
 
 #include <stdio.h>
+#include "TLPatchNode.hpp"
 
 class TLPatchCable {
 public:
-    TLPatchCable(int bufferSize, void* input, void* output);
+    TLPatchCable(int bufferSize, int elementSize, TLPatchNode* input, TLPatchNode* output);
     ~TLPatchCable();
     
-    void* outputObj;
+    TLPatchNode* outputNode;
+    TLPatchNode* inputNode;
     void* signal;
     
 private:
     int _bufferSize;
-    void* _input;
     
 };
 

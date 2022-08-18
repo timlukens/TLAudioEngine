@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "TLRealTimeAudioObject.hpp"
-#include "TLPatchCable.hpp"
 
 class TLAudioOutput : public TLRealTimeAudioObject {
 public:

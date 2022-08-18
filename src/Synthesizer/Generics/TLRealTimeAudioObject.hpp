@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <vector>
 #include "TLPatchCable.hpp"
+#include "TLPatchNode.hpp"
 
 using namespace std;
 
@@ -20,12 +21,15 @@ public:
     ~TLRealTimeAudioObject();
     
     virtual int tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData);
-    void AddOutputTo(TLRealTimeAudioObject* inObj);
-    void setInputCable(TLPatchCable* cable);
+    void ConnectNodes(TLPatchNode* outputNode, TLPatchNode* inputNode);
+    void CreateInputNode();
+    void CreateOutputNode();
+    
+    vector<TLPatchNode*> outputNodes;
+    vector<TLPatchNode*> inputNodes;
     
 protected:
-    vector<TLPatchCable*> _outputCables;
-    TLPatchCable* _inputCable;
+    float* _buffer;
 };
 
 #endif /* TLRealTimeAudioObject_hpp */

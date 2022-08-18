@@ -6,12 +6,14 @@
 //
 
 #include "TLAudioOutput.hpp"
+#include "TLPatchNode.hpp"
 #include <memory>
+#include <iostream>
 
 using namespace std;
 
 TLAudioOutput::TLAudioOutput() {
-    
+    CreateInputNode();
 }
 
 TLAudioOutput::~TLAudioOutput() {
@@ -19,8 +21,11 @@ TLAudioOutput::~TLAudioOutput() {
 }
 
 int TLAudioOutput::tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData) {
-    if(_inputCable->signal) {
-        memcpy(outputBuffer, _inputCable->signal, framesPerBuffer * sizeof(float));
+    for(TLPatchNode* n : inputNodes) {
+        TLPatchCable* c = (TLPatchCable*)n->connectedCable;
+        if(c->signal) {
+            memcpy(outputBuffer, c->signal, framesPerBuffer * sizeof(float));
+        }
     }
     return 0;
 }

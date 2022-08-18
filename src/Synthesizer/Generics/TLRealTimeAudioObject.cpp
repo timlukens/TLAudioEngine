@@ -12,20 +12,32 @@
 using namespace std;
 
 TLRealTimeAudioObject::TLRealTimeAudioObject() {
-    cout << "TLRealTimeAudioObject alloc\n";
+    _buffer = (float*)malloc(sizeof(float) * MAX_BUFFER_SIZE);
 }
 
 TLRealTimeAudioObject::~TLRealTimeAudioObject() {
-    cout << "TLRealTimeAudioObject dealloc\n";
+    free(_buffer);
+    _buffer = nullptr;
+    
+    for(TLPatchNode* n : inputNodes)
+        free(n);
+    
+    for(TLPatchNode* n : outputNodes)
+        free(n);
 }
 
-void TLRealTimeAudioObject::AddOutputTo(TLRealTimeAudioObject* inObj) {
-    TLPatchCable* c = new TLPatchCable(MAX_BUFFER_SIZE, this, inObj);
-    _outputCables.push_back(c);
+void TLRealTimeAudioObject::CreateOutputNode() {
+    outputNodes.push_back(new TLPatchNode(this));
 }
 
-void TLRealTimeAudioObject::setInputCable(TLPatchCable* cable) {
-    _inputCable = cable;
+void TLRealTimeAudioObject::CreateInputNode() {
+    inputNodes.push_back(new TLPatchNode(this));
+}
+
+void TLRealTimeAudioObject::ConnectNodes(TLPatchNode* outputNode, TLPatchNode* inputNode) {
+    TLPatchCable* cable = new TLPatchCable(MAX_BUFFER_SIZE, sizeof(float), inputNode, outputNode);
+    outputNode->connectedCable = cable;
+    inputNode->connectedCable = cable;
 }
 
 int TLRealTimeAudioObject::tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData) {

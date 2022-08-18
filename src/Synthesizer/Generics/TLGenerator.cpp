@@ -10,12 +10,11 @@
 #include <math.h>
 
 TLGenerator::TLGenerator() {
-    _buffer = (float*)malloc(sizeof(float) * MAX_BUFFER_SIZE);
+    CreateOutputNode();
 }
 
 TLGenerator::~TLGenerator() {
-    free(_buffer);
-    _buffer = nullptr;
+    
 }
 
 int TLGenerator::tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData) {

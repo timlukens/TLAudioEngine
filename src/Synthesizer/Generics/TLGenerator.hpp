@@ -21,9 +21,6 @@ public:
     ~TLGenerator();
     
     virtual int tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData);
-    
-protected:
-    float* _buffer;
 };
 
 #endif /* TLAudioGenerator_hpp */

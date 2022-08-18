@@ -13,6 +13,8 @@
 #include "TLRealTimeAudioObject.hpp"
 #include "TLGenerator.hpp"
 
+using namespace std;
+
 class TLModularRack : public TLRealTimeAudioObject {
 public:
     TLModularRack();
@@ -23,7 +25,8 @@ public:
     void addGenerator(TLGenerator* obj);
     
 private:
-    std::vector<TLGenerator*> _generators;
+    vector<TLGenerator*> _generators;
+    vector<void*> _allocatedObjects;
 };
 
 #endif /* TLModularRack_hpp */

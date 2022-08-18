@@ -9,5 +9,15 @@
 #define TLAudioEffect_hpp
 
 #include <stdio.h>
+#include "TLRealTimeAudioObject.hpp"
+#include "TLPatchNode.hpp"
+
+class TLAudioEffect : public TLRealTimeAudioObject {
+public:
+    TLAudioEffect();
+    ~TLAudioEffect();
+    
+    TLPatchNode* GetNextInputNode();
+};
 
 #endif /* TLAudioEffect_hpp */
