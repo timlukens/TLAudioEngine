@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 #include <vector>
-#include "TLPatchCable.hpp"
-#include "TLPatchNode.hpp"
+#include "Other/TLPatchCable.hpp"
+#include "Other/TLPatchNode.hpp"
 
 using namespace std;
 

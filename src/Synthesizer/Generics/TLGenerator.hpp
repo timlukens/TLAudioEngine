@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 #include <vector>
-#include "TLRealTimeAudioObject.hpp"
-#include "TLPatchCable.hpp"
+#include "Generics\TLRealTimeAudioObject.hpp"
+#include "Other\TLPatchCable.hpp"
 
 using namespace std;
 

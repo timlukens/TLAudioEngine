@@ -21,6 +21,7 @@ TLAudioEngine::TLAudioEngine() {
     _inputChannels = 0;
     _outputChannels = 1;
     _engineInfo = new TLAudioInfo();
+    _engineInfo->frameSizeInBytes = 4;
 }
 
 TLAudioEngine::~TLAudioEngine() {
@@ -62,7 +63,7 @@ static int TLAudioCallback( const void *inputBuffer, void *outputBuffer,
                            void *userData )
 {
     TLAudioInfo* ai = (TLAudioInfo*)userData;
-    memset(outputBuffer, 0, sizeof(float) * framesPerBuffer);
+    memset(outputBuffer, 0, ai->frameSizeInBytes * framesPerBuffer);
     for(shared_ptr<TLRealTimeAudioObject> o : ai->audioObjects) {
         o->tick(inputBuffer, outputBuffer, framesPerBuffer, ai);
     }

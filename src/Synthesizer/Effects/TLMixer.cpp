@@ -20,22 +20,18 @@ TLMixer::~TLMixer() {
 
 int TLMixer::tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData) {
     _numInputsTicked++;
-    if(_numInputsTicked < inputNodes.size()) return 0;
     
     for(TLPatchNode* n : inputNodes) {
-        TLPatchCable* c = (TLPatchCable*)n->connectedCable;
-        float* sig = (float*)c->signal;
-        for(int i = 0; i < framesPerBuffer; i++) {
+        float* sig = (float*)n->nodeBuffer;
+        for(unsigned int i = 0; i < framesPerBuffer; i++) {
             _buffer[i] += sig[i];
         }
     }
+
+    if (_numInputsTicked < inputNodes.size()) return 0;
     
     for(TLPatchNode* n : outputNodes) {
-        TLPatchCable* c = (TLPatchCable*)n->connectedCable;
-        memcpy(c->signal, _buffer, framesPerBuffer * sizeof(float));
-        TLPatchNode* connectedInputNode = (TLPatchNode*)c->inputNode;
-        TLRealTimeAudioObject* o = (TLRealTimeAudioObject*)connectedInputNode->owner;
-        o->tick(inputBuffer, outputBuffer, framesPerBuffer, userData);
+        n->Tick(inputBuffer, outputBuffer, framesPerBuffer, userData, _buffer);
     }
     
     _numInputsTicked = 0;

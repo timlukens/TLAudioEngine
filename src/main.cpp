@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "TLAudioEngine.hpp"
-#include "TLModularRack.hpp"
+#include "Other\TLModularRack.hpp"
 
 
 using namespace std;
@@ -13,9 +13,9 @@ int main() {
     engine->AddRealTimeAudioObject(rack);
     engine->StartEngine();
     
-    cin.get();
+    rack->NextScoreLine();
     
-    free(engine);
+    delete(engine);
     
     return 0;
 }

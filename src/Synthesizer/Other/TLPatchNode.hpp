@@ -16,10 +16,11 @@ public:
     TLPatchNode(void* nodeOwner);
     ~TLPatchNode();
     
-    void Tick(unsigned long framesPerBuffer, void *userData);
+    void Tick(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer, void* userData, void* buffer);
     
     void* connectedCable;
     void* owner;
+    void* nodeBuffer;
 };
 
 #endif /* TLPatchNode_hpp */

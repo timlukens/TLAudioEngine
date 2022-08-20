@@ -9,7 +9,7 @@
 #define TLAudioOutput_hpp
 
 #include <stdio.h>
-#include "TLRealTimeAudioObject.hpp"
+#include "Generics\TLRealTimeAudioObject.hpp"
 
 class TLAudioOutput : public TLRealTimeAudioObject {
 public:

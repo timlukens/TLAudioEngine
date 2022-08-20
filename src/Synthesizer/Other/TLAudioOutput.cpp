@@ -22,9 +22,8 @@ TLAudioOutput::~TLAudioOutput() {
 
 int TLAudioOutput::tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData) {
     for(TLPatchNode* n : inputNodes) {
-        TLPatchCable* c = (TLPatchCable*)n->connectedCable;
-        if(c->signal) {
-            memcpy(outputBuffer, c->signal, framesPerBuffer * sizeof(float));
+        if(n->nodeBuffer) {
+            memcpy(outputBuffer, n->nodeBuffer, framesPerBuffer * sizeof(float));
         }
     }
     return 0;

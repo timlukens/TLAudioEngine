@@ -6,7 +6,7 @@
 //
 
 #include "TLPatchCable.hpp"
-#include "TLRealTimeAudioObject.hpp"
+#include "Generics/TLRealTimeAudioObject.hpp"
 
 TLPatchCable::TLPatchCable(int bufferSize, int elementSize, TLPatchNode* input, TLPatchNode* output) {
     _bufferSize = bufferSize;

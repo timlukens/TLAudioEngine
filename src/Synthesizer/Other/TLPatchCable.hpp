@@ -9,7 +9,7 @@
 #define TLPatchCable_hpp
 
 #include <stdio.h>
-#include "TLPatchNode.hpp"
+#include "Other/TLPatchNode.hpp"
 
 class TLPatchCable {
 public:

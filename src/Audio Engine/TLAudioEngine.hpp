@@ -14,13 +14,14 @@
 #include <stdio.h>
 #include <vector>
 #include <memory>
-#include "portaudio.h"
-#include "TLRealTimeAudioObject.hpp"
+#include "PortAudio/portaudio.h"
+#include "Generics\TLRealTimeAudioObject.hpp"
 
 using namespace std;
 
 struct TLAudioInfo {
     vector<shared_ptr<TLRealTimeAudioObject>> audioObjects;
+    int frameSizeInBytes;
 };
 
 class TLAudioEngine {

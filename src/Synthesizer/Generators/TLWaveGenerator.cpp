@@ -5,9 +5,11 @@
 //  Created by Katie Oates on 8/16/22.
 //
 
+#define _USE_MATH_DEFINES
+
 #include "TLWaveGenerator.hpp"
 #include "TLAudioEngine.hpp"
-#include "TLPatchNode.hpp"
+#include "Other/TLPatchNode.hpp"
 #include <math.h>
 #include <iostream>
 
@@ -22,24 +24,25 @@ TLWaveGenerator::TLWaveGenerator(TLWaveType type) {
     
     switch(type) {
         case TLWaveTypeSine:
-            CreateSineTable();
+            for (int i = 0; i < tableSize; i++) {
+                table.push_back(sin(M_PI * 2 * ((double)i / (double)tableSize)));
+            }
+            break;
+        case TLWaveTypeSaw:
+            for (int i = 0; i < tableSize; i++) {
+                table.push_back((double)i / (double)tableSize);
+            }
             break;
         default:
             cout << "TLWaveGenerator attempting to create invalid wave type.\n";
     }
+
+    stepSize = _frequency * (double)tableSize / SAMPLE_RATE;
 }
 
 TLWaveGenerator::~TLWaveGenerator() {
-    free(freqModNode);
-    free(ampModNode);
-}
-
-void TLWaveGenerator::CreateSineTable() {
-    for(int i = 0; i < tableSize; i++) {
-        table.push_back(sin(M_PI * 2 * ((double)i / (double)tableSize)));
-    }
-    
-    stepSize = _frequency * (double)tableSize / SAMPLE_RATE;
+    delete(freqModNode);
+    delete(ampModNode);
 }
 
 void TLWaveGenerator::SetFrequency(double freq) {
@@ -57,20 +60,21 @@ int TLWaveGenerator::tick(const void *inputBuffer, void *outputBuffer, unsigned 
     double useAmp = _amplitude;
     
     if(freqModNode->connectedCable != nullptr) {
-        TLPatchCable* freqModCable = (TLPatchCable*)freqModNode->connectedCable;
-        freqModSig = (float*)freqModCable->signal;
+        freqModSig = (float*)freqModNode->nodeBuffer;
+        /*for (int i = 0; i < framesPerBuffer; i++) {
+            cout << freqModSig[i] << "\n";
+        }*/
     }
     
     if(ampModNode->connectedCable != nullptr) {
-        TLPatchCable* ampModCable = (TLPatchCable*)ampModNode->connectedCable;
-        ampModSig = (float*)ampModCable->signal;
+        ampModSig = (float*)ampModNode->nodeBuffer;
     }
     
     for(int i = 0; i < framesPerBuffer; i++) {
         if(freqModNode->connectedCable != nullptr)
-            stepSize = (_frequency + freqModSig[i]) * (double)tableSize / SAMPLE_RATE;
+            stepSize = abs((_frequency + freqModSig[i]) * (double)tableSize / SAMPLE_RATE);
         
-        if(ampModNode->connectedCable != nullptr)
+       if(ampModSig != nullptr)
             useAmp += ampModSig[i];
         
         _buffer[i] = table[index] * useAmp;
@@ -79,14 +83,7 @@ int TLWaveGenerator::tick(const void *inputBuffer, void *outputBuffer, unsigned 
     }
     
     for(TLPatchNode* n : outputNodes) {
-        TLPatchCable* c = (TLPatchCable*)n->connectedCable;
-        memcpy(c->signal, _buffer, sizeof(float) * framesPerBuffer);
-        TLPatchNode* connectedInputNode = c->inputNode;
-        
-        if(connectedInputNode->owner != nullptr) {
-            TLRealTimeAudioObject* o = (TLRealTimeAudioObject*)connectedInputNode->owner;
-            o->tick(inputBuffer, outputBuffer, framesPerBuffer, userData);
-        }
+        n->Tick(inputBuffer, outputBuffer, framesPerBuffer, userData, _buffer);
     }
     
     memset(_buffer, 0, sizeof(float) * framesPerBuffer);

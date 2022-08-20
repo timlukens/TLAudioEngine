@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include "TLRealTimeAudioObject.hpp"
-#include "TLPatchNode.hpp"
+#include "Other\TLPatchNode.hpp"
 
 class TLAudioEffect : public TLRealTimeAudioObject {
 public:

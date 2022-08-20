@@ -20,10 +20,10 @@ TLRealTimeAudioObject::~TLRealTimeAudioObject() {
     _buffer = nullptr;
     
     for(TLPatchNode* n : inputNodes)
-        free(n);
+        delete(n);
     
     for(TLPatchNode* n : outputNodes)
-        free(n);
+        delete(n);
 }
 
 void TLRealTimeAudioObject::CreateOutputNode() {

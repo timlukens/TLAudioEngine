@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 #include <vector>
-#include "TLRealTimeAudioObject.hpp"
-#include "TLGenerator.hpp"
+#include "Generics/TLRealTimeAudioObject.hpp"
+#include "Generics/TLGenerator.hpp"
 
 using namespace std;
 
@@ -23,6 +23,8 @@ public:
     int tick(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, void *userData);
     
     void addGenerator(TLGenerator* obj);
+
+    void NextScoreLine();
     
 private:
     vector<TLGenerator*> _generators;

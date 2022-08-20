@@ -10,12 +10,13 @@
 
 #include <stdio.h>
 #include <vector>
-#include "TLGenerator.hpp"
+#include "Generics/TLGenerator.hpp"
 
 using namespace std;
 
 enum TLWaveType {
-    TLWaveTypeSine = 0
+    TLWaveTypeSine = 0,
+    TLWaveTypeSaw
 };
 
 class TLWaveGenerator : public TLGenerator {
@@ -36,8 +37,6 @@ private:
     double index = 0;
     double stepSize;
     vector<float> table;
-    
-    void CreateSineTable();
 };
 
 #endif /* TLWaveGenerator_hpp */
